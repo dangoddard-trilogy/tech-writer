@@ -28,9 +28,24 @@ jobs:
           pip install -r requirements.txt
 
       # Extract PR Number and Commit SHA from the GitHub event context
+      - name: Extract Pull Request Details
+        id: pr_info
+        run: |
+          pr_num=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
+          commit_sha=$(jq -r '.pull_request.commit_sha' "$GITHUB_EVENT_PATH")
+          echo "PR Number: $pr_num" >> $GITHUB_ENV
+          echo "Commit SHA: $commit_sha" >> $GITHUB_ENV
 
       # Run the Python script
-      
+      - name: Generate Updated README
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.AI_GITHUB_TOKEN }}
+          REPO_PATH: ${{ github.repository }}
+          PR_NUM: ${{ env.pr_num }}
+          COMMIT_SHA: ${{ env.commit_sha }}
+        run: python main.py
+    
       # Additional step to enable debugging, helps in troublshooting
       - name: Enable Debug Logging
         run: |
