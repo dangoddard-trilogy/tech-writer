@@ -31,10 +31,8 @@ jobs:
       - name: Extract Pull Request Details
         id: pr_info
         run: |
-          pr_num=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")
-          commit_sha=$(jq -r '.pull_request.commit_sha' "$GITHUB_EVENT_PATH")
-          echo "PR Number: $pr_num" >> $GITHUB_ENV
-          echo "Commit SHA: $commit_sha" >> $GITHUB_ENV
+          echo "pr_num=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")" >> $GITHUB_ENV
+          echo "commit_sha=$(jq -r '.pull_request.merge_commit_sha' "$GITHUB_EVENT_PATH")" >> $GITHUB_ENV
 
       # Run the Python script
       - name: Generate Updated README
