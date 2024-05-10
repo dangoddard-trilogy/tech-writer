@@ -33,10 +33,10 @@ def main():
     commit_messages = [commit.commit.message for commit in pull_request.get_commits()]
 
     # Format data for OpenAI prompt
-    prompt = format_data_for_openai(pull_request_diffs, readme_content, commit_messages)
+    prompt = format_data_for_ai(pull_request_diffs, readme_content, commit_messages)
 
     # Call OpenAI to generate the updated README content
-    updated_readme = call_openai(prompt)
+    updated_readme = call_ai(prompt)
 
     # Create PR for Updated PR
     update_readme_and_create_pr(repo, updated_readme, readme_content.sha)
