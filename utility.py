@@ -1,13 +1,13 @@
 import os
 import base64
 from langchain_groq import ChatGroq
-from lagnchain_core.output_parsers.string import StrOutputParser
+from langchain_core.output_parsers.string import StrOutputParser
 
 def format_data_for_ai(diffs, readme_content, commit_messages):
     prompt = None
     # Combine the changes into a string with clear delineation.
     changes = '\n'.join([
-        f'File: {file["filename"]}\Diff: {file["patch"]}\n' 
+        f'File: {file["filename"]}\\Diff: {file["patch"]}\n' 
         for file in diffs
     ])
     # Combine all commit messages
