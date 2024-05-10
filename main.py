@@ -8,7 +8,7 @@ def main():
 
     # Get the repo path and PR number from the environment variables
     repo_path = os.getenv('REPO_PATH')
-    pull_request_number = int(os.getenv('PR_NUMBER'))
+    pull_request_number = int(os.getenv('PR_NUM'))
     
     # Get the repo object
     repo = g.get_repo(repo_path)
