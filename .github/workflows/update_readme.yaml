@@ -37,7 +37,7 @@ jobs:
       # Run the Python script
       - name: Generate Updated README
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GROQ_API_KEY: ${{ secrets.GROK_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.AI_GITHUB_TOKEN }}
           REPO_PATH: ${{ github.repository }}
           PR_NUM: ${{ env.pr_num }}
