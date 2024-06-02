@@ -12,9 +12,6 @@ def main():
     
     # Get the repo object
     repo = g.get_repo(repo_path)
-
-    # Fetch README content (assuming README.md)
-    readme_content = repo.get_contents("README.md")
     
     # print(readme_content)
     # Fetch pull request by number
@@ -33,13 +30,16 @@ def main():
     commit_messages = [commit.commit.message for commit in pull_request.get_commits()]
 
     # Format data for OpenAI prompt
-    prompt = format_data_for_ai(pull_request_diffs, readme_content, commit_messages)
+    prompt = format_data_for_ai(pull_request_diffs, commit_messages)
 
     # Call OpenAI to generate the updated README content
-    updated_readme = call_ai(prompt)
+    response = call_ai(prompt)
+
+    # add comment to the PR
+    pull_request.create_issue_comment(response)
 
     # Create PR for Updated PR
-    update_readme_and_create_pr(repo, updated_readme, readme_content.sha)
+    # update_readme_and_create_pr(repo, updated_readme, readme_content.sha)
 
 if __name__ == '__main__':
     main()
