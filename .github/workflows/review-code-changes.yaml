@@ -1,14 +1,13 @@
-name: README Update Automation
+name: Review Code Changes
 
 on:
   pull_request:
-    types: [closed]
+    types: [opened]  # Trigger on PR creation
 
 jobs:
   update-readme:
-    name: Update README after PR merge
+    name: Review code changes
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true
 
     steps:
       # Check out the repo to access its content
@@ -32,7 +31,7 @@ jobs:
         id: pr_info
         run: |
           echo "pr_num=$(jq -r '.pull_request.number' "$GITHUB_EVENT_PATH")" >> $GITHUB_ENV
-          echo "commit_sha=$(jq -r '.pull_request.merge_commit_sha' "$GITHUB_EVENT_PATH")" >> $GITHUB_ENV
+          echo "commit_sha=$(jq -r '.pull_request.head.sha' "$GITHUB_EVENT_PATH")" >> $GITHUB_ENV  # Use head SHA for unmerged PR
 
       # Run the Python script
       - name: Generate Updated README
@@ -44,8 +43,7 @@ jobs:
           COMMIT_SHA: ${{ env.commit_sha }}
         run: python main.py
     
-      # Additional step to enable debugging, helps in troublshooting
+      # Additional step to enable debugging, helps in troubleshooting
       - name: Enable Debug Logging
         run: |
           echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
-          
